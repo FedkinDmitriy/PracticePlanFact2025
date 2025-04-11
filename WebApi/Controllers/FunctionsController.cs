@@ -1,10 +1,12 @@
-﻿using Data.Repositories.Interfaces;
+﻿using Data.Models.Functions;
+using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     /// <summary>
-    /// Контроллер для работы с функциями
+    /// Контроллер для работы с аналитическими функциями
+    /// Использует <see cref="IFunctionRepository"/> для взаимодействия с базой данных.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -12,24 +14,30 @@ namespace WebAPI.Controllers
     {
         private readonly IFunctionRepository _functionRepository;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр <see cref="FunctionsController"/>
+        /// </summary>
+        /// <param name="functionRepository">Репозиторий для работы с аналитическими функциями</param>
         public FunctionsController(IFunctionRepository functionRepository)
         {
             _functionRepository = functionRepository;
         }
+
         /// <summary>
-        /// Получить сумму заказов в день рождения клиента со статусом Выполнен
+        /// Получить общую сумму заказов, сделанных в день рождения клиентов.
         /// </summary>
-        /// <returns>Список клиентов и сумма выполненных заказов в день рождения</returns>
+        /// <returns>Общая сумма заказов в день рождения</returns>
         [HttpGet("birthday-orders-total")]
         public async Task<IActionResult> GetBirthdayOrdersTotal()
         {
             var result = await _functionRepository.GetBirthdayOrdersTotalAsync();
             return Ok(result);
         }
+
         /// <summary>
-        /// Получить средний чек по каждому часу
+        /// Получить средний чек заказов по каждому часу суток.
         /// </summary>
-        /// <returns>Список часов и средний чек для каждого в порядке убывания</returns>
+        /// <returns>Список объектов с информацией о часе и среднем чеке</returns>
         [HttpGet("avg-order-sum-per-hour")]
         public async Task<IActionResult> GetAvgOrderSumPerHour()
         {

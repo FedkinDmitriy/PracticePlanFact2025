@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers
 {
     /// <summary>
-    /// Контроллер для работы с клиентами
+    /// Контроллер для работы с клиентами.
+    /// Использует <see cref="IClientRepository"/> для взаимодействия с базой данных.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -19,14 +20,14 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Получить список клиентов с возможностью фильтрации и пагинации
+        /// Получить список клиентов с возможностью фильтрации и пагинации.
         /// </summary>
-        /// <param name="firstName">Фильтр по имени</param>
-        /// <param name="lastName">Фильтр по фамилии</param>
-        /// <param name="dateOfBirth">Фильтр по дате рождения</param>
-        /// <param name="pageNumber">Номер страницы (по умолчанию 1)</param>
-        /// <param name="pageSize">Размер страницы (по умолчанию 10)</param>
-        /// <returns>Список клиентов и общее количество</returns>
+        /// <param name="firstName">Фильтр по имени (<paramref name="firstName"/>)</param>
+        /// <param name="lastName">Фильтр по фамилии (<paramref name="lastName"/>)</param>
+        /// <param name="dateOfBirth">Фильтр по дате рождения (<paramref name="dateOfBirth"/>)</param>
+        /// <param name="pageNumber">Номер страницы (<paramref name="pageNumber"/>), по умолчанию 1</param>
+        /// <param name="pageSize">Размер страницы (<paramref name="pageSize"/>), по умолчанию 10</param>
+        /// <returns>JSON-объект с полями <c>totalCount</c> и <c>clients</c></returns>
         [HttpGet]
         public async Task<IActionResult> GetAll(string? firstName, string? lastName, DateOnly? dateOfBirth, int pageNumber = 1, int pageSize = 10)
         {
@@ -35,10 +36,10 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Получить клиента по ID
+        /// Получить клиента по <paramref name="id"/>.
         /// </summary>
-        /// <param name="id">ID клиента</param>
-        /// <returns>Клиент с указанным ID</returns>
+        /// <param name="id">Идентификатор клиента</param>
+        /// <returns>Объект <see cref="Client"/> или статус 404, если не найден</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -49,10 +50,10 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Добавить нового клиента
+        /// Добавить нового клиента.
         /// </summary>
-        /// <param name="client">Данные клиента</param>
-        /// <returns>Созданный клиент</returns>
+        /// <param name="client">Экземпляр <see cref="Client"/>, содержащий данные</param>
+        /// <returns>Результат с данными созданного клиента</returns>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Client client)
         {
@@ -61,11 +62,11 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Обновить существующего клиента
+        /// Обновить данные клиента по <paramref name="id"/>.
         /// </summary>
-        /// <param name="id">ID клиента</param>
-        /// <param name="client">Новые данные клиента</param>
-        /// <returns>Результат выполнения</returns>
+        /// <param name="id">Идентификатор клиента</param>
+        /// <param name="client">Новый объект <see cref="Client"/></param>
+        /// <returns>204 No Content при успешном обновлении</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] Client client)
         {
@@ -77,10 +78,10 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Удалить клиента по ID
+        /// Удалить клиента по <paramref name="id"/>.
         /// </summary>
-        /// <param name="id">ID клиента</param>
-        /// <returns>Результат удаления</returns>
+        /// <param name="id">Идентификатор клиента</param>
+        /// <returns>204 No Content при успешном удалении</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

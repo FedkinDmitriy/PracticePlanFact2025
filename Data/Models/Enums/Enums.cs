@@ -1,7 +1,17 @@
-﻿namespace Data.Models.Enums
+﻿using System.Runtime.Serialization;
+
+namespace Data.Models.Enums
 {
     /// <summary>
-    /// Статусы для заказа: 0 - Не обработан, 1 - Отменен, 2 - Выполнен
+    /// Перечисление возможных статусов заказа.
+    /// 0 - Не_обработан, 1 - Отменен, 2 - Выполнен
     /// </summary>
-    public enum OrderStatus { Не_обработан, Отменен, Выполнен };
+    public enum OrderStatus
+    {
+        Не_обработан = 0,
+
+        Отменен = 1,
+
+        Выполнен = 2
+    }
 }
