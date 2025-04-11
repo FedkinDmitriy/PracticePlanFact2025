@@ -28,14 +28,14 @@ namespace PracticePlanFact2025.Tests.Repositories
         [Fact]
         public async Task GetAllAsync_ReturnsAllClients()
         {
-            // Arrange
+            // Arrange (подготовка)
             var context = GetFakeContext();
             var repository = new ClientRepository(context);
 
-            // Act
+            // Act (действие)
             var (clients, count) = await repository.GetAllAsync();
 
-            // Assert
+            // Assert (проверка)
             Assert.Equal(2, count);
             Assert.Equal(2, clients.Count());
         }
