@@ -35,7 +35,7 @@ REST API-проект на ASP.NET Core для управления клиент
 
 3. Примените миграции:
     ```bash
-    dotnet ef database update
+    dotnet ef database update --project Data --startup-project WebApi
     ```
 
 4. Запустите приложение:
