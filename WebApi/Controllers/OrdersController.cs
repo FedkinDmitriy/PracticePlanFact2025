@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Data.Models.Enums;
+using Data.Repositories.Implementations;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -88,6 +89,12 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var client = await _orderRepository.GetByIdAsync(id);
+            if (client == null)
+            {
+                return NotFound();
+            }
+
             await _orderRepository.DeleteAsync(id);
             return NoContent();
         }

@@ -85,8 +85,16 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var client = await _clientRepository.GetByIdAsync(id);
+            if (client == null)
+            {
+                return NotFound();
+            }
+
             await _clientRepository.DeleteAsync(id);
             return NoContent();
         }
+
+
     }
 }
