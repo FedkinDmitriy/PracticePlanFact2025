@@ -1,0 +1,39 @@
+image: mcr.microsoft.com/dotnet/sdk:9.0-preview
+
+services:
+  - postgres:17
+
+variables:
+  POSTGRES_DB: mydb
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
+
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - dotnet restore
+  - dotnet tool update --global dotnet-ef
+
+build_job:
+  stage: build
+  tags: [docker]
+  script:
+    - dotnet build --configuration Release
+
+test_job:
+  stage: test
+  tags: [docker]
+  script:
+    - dotnet test PracticePlanFact2025.Tests/PracticePlanFact2025.Tests.csproj --no-build --configuration Release
+
+deploy_job:
+  stage: deploy
+  tags: [docker]
+  script:
+    - sleep 10
+    - dotnet ef database update --connection "Host=localhost;Database=mydb;Username=postgres;Password=postgres" --project Data --startup-project WebApi
